@@ -1,0 +1,13 @@
+{
+    "name": "json-dev/car_forum",
+    "description": "this is a car blog",
+    "authors": [
+        {
+            "name": "lukarrio1",
+            "email": "tomennis1997@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    }
+}

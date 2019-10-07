@@ -1,0 +1,17 @@
+.loginlogo {
+  width: 100px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(xx);
+    opacity: 0;
+  }
+}
+
+.fade-atm {
+  animation: fade 3s forwards 0s linear;
+}
