@@ -1,5 +1,6 @@
 <?php
 include_once '../controllers/BaseController.php';
+
 class Post extends Base
 {
     public $conn, $user, $date;
@@ -110,14 +111,16 @@ class Post extends Base
         $acpost = $this->find('posts', $post_id, $this->conn);
         $powner = $this->find('users', $acpost['user_id'], $this->conn);
         $user = $this->find('users', $this->user['id'], $this->conn);
-        $notification = array();
-        $notification = [
-            'user_id' => $this->user['id'],
-            're_id' => $powner['id'],
-            'notify' => $user['firstname'] . " liked your post",
-            'class' => 'newlike',
-            'icon' => 'fas fa-heart',
-        ];
+        if ($powner['id'] != $this->user['id']) {
+            $notification = array();
+            $notification = [
+                'user_id' => $this->user['id'],
+                're_id' => $powner['id'],
+                'notify' => $user['firstname'] . " liked your post",
+                'class' => 'newlike',
+                'icon' => 'fas fa-heart',
+            ];
+        }
         if (empty($like)) {
             $sql = "INSERT INTO likes (post_id, user_id) VALUES('$post_id','$id')";
             if (mysqli_query($this->conn, $sql)) {
@@ -221,8 +224,5 @@ switch ($function) {
         break;
     case 8:
         $post->getAllPosts();
-        break;
-    default:
-        # code...
         break;
 }
