@@ -345,6 +345,7 @@ likeUserPost = post_id => {
   axios
     .post("../../../controllers/PostController.php?function=3", fd)
     .then(res => {
+      console.log(res.data);
       getSingleUser(localStorage.getItem("temp_friend_id"));
     })
     .catch(err => {

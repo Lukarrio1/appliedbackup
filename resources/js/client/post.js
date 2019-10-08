@@ -25,6 +25,7 @@ createPost = () => {
     axios
       .post("../../../controllers/PostController.php?function=1", fd)
       .then(res => {
+        console.log(res.data);
         $("#posttitle").val("");
         $("#postbody").val("");
         $("#postimgout").val("");

@@ -9,15 +9,16 @@ trait Notification
         $notify = $notification['notify'];
         $class = $notification['class'];
         $icon = $notification['icon'];
-        // $check_sql = "SELECT * FROM notifications WHERE re_id='$re_id' AND class='$class'";
-        // $check_qry = mysqli_query($conn, $check_sql);
-        // $res = mysqli_fetch_all($check_qry, MYSQLI_ASSOC);
-        // if (count($res) < 1) {
-        $sql = "INSERT INTO notifications(user_id,re_id,notify,class,icon) VALUES('$user_id','$re_id','$notify','$class','$icon')";
-        if (mysqli_query($conn, $sql)) {
-            return 1;
+        $ref_id = $notification['ref_id'];
+        $check_sql = "SELECT * FROM notifications WHERE ref_id='$ref_id' AND class='$class'";
+        $check_qry = mysqli_query($conn, $check_sql);
+        $res = mysqli_fetch_all($check_qry, MYSQLI_ASSOC);
+        if (count($res) < 1) {
+            $sql = "INSERT INTO notifications(user_id,re_id,notify,class,icon,ref_id) VALUES('$user_id','$re_id','$notify','$class','$icon',$ref_id)";
+            if (mysqli_query($conn, $sql)) {
+                return 1;
+            }
         }
-        // }
     }
 
     function getOneNotify($id, $con)

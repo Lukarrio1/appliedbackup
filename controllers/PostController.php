@@ -20,23 +20,26 @@ class Post extends Base
         $imgname = $this->storeImage('postImg');
         $user_id = $this->user['id'];
         $friends = $this->belongsTo('friends', $this->user['id'], $this->conn);
-        foreach ($friends as $friend) {
-            $user = $this->find('users', $friend['user_id'], $this->conn);
-            $notification = array();
-            $notification = [
-                'user_id' => $this->user['id'],
-                're_id' => $friend['friend_id'],
-                'notify' => $user['firstname'] . " made a new post",
-                'class' => 'newpost',
-                'icon' => 'fas fa-atlas',
-            ];
-            $this->setNotify($notification, $this->conn);
-        }
         $sql = "INSERT INTO posts (title,body,img,user_id) VALUES('$title','$body','$imgname','$user_id')";
         if (mysqli_query($this->conn, $sql)) {
+            $newpost = $this->dynamicBelongsTo('posts', 'img', $imgname, $this->conn)[0];
+            foreach ($friends as $friend) {
+                $user = $this->find('users', $friend['user_id'], $this->conn);
+                $notification = array();
+                $notification = [
+                    'user_id' => $this->user['id'],
+                    're_id' => $friend['friend_id'],
+                    'notify' => $user['firstname'] . " made a new post",
+                    'class' => 'newpost',
+                    'icon' => 'fas fa-atlas',
+                    'ref_id' => $newpost['id'],
+                ];
+                $this->setNotify($notification, $this->conn);
+            }
 
             exit(json_encode(['status' => 200]));
         }
+
     }
 
     public function deletePost($id)
@@ -111,20 +114,21 @@ class Post extends Base
         $acpost = $this->find('posts', $post_id, $this->conn);
         $powner = $this->find('users', $acpost['user_id'], $this->conn);
         $user = $this->find('users', $this->user['id'], $this->conn);
-        if ($powner['id'] != $this->user['id']) {
-            $notification = array();
-            $notification = [
-                'user_id' => $this->user['id'],
-                're_id' => $powner['id'],
-                'notify' => $user['firstname'] . " liked your post",
-                'class' => 'newlike',
-                'icon' => 'fas fa-heart',
-            ];
-        }
         if (empty($like)) {
             $sql = "INSERT INTO likes (post_id, user_id) VALUES('$post_id','$id')";
             if (mysqli_query($this->conn, $sql)) {
-                $this->setNotify($notification, $this->conn);
+                if ($powner['id'] != $this->user['id']) {
+                    $notification = array();
+                    $notification = [
+                        'user_id' => $this->user['id'],
+                        're_id' => $powner['id'],
+                        'notify' => $user['firstname'] . " liked your post",
+                        'class' => 'newlike',
+                        'icon' => 'fas fa-heart',
+                        'ref_id' => $post_id,
+                    ];
+                    $this->setNotify($notification, $this->conn);
+                }
                 exit(json_encode(['liked' => 1]));
             }
         } else {
