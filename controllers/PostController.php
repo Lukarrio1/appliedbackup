@@ -152,7 +152,22 @@ class Post extends Base
     {
         $comment = $this->clean($c, $this->conn);
         $post_id = $this->clean($p, $this->conn);
+        $acpost = $this->find('posts', $post_id, $this->conn);
+        $powner = $this->find('users', $acpost['user_id'], $this->conn);
+        $user = $this->find('users', $this->user['id'], $this->conn);
         $id = $this->user['id'];
+        if ($powner['id'] != $this->user['id']) {
+            $notification = array();
+            $notification = [
+                'user_id' => $this->user['id'],
+                're_id' => $powner['id'],
+                'notify' => $user['firstname'] . " commented on your post",
+                'class' => 'newComment',
+                'icon' => 'fas fa-comment',
+                'ref_id' => $post_id,
+            ];
+            $this->setNotify($notification, $this->conn);
+        }
         $sql = "INSERT INTO comments(user_id,post_id,comment,created_at) VALUES('$id','$post_id','$comment','$this->date')";
         if (mysqli_query($this->conn, $sql)) {
             exit(json_encode(['status' => 1]));
@@ -189,6 +204,16 @@ class Post extends Base
         }
 
         exit(json_encode($res));
+
+    }
+
+    public function getSinglePost($d)
+    {
+        $id = $this->clean($d, $this->conn);
+        $post = $this->find('posts', $id, $this->conn);
+        $owner = $this->find('users', $post['user_id'], $this->conn);
+        $comments = $this->dynamicBelongsTo('comments', 'post_id', $id, $this->conn);
+        $likes = $this->dynamicBelongsTo('likes', 'post_id', $id, $this->conn);
 
     }
 }
@@ -228,5 +253,9 @@ switch ($function) {
         break;
     case 8:
         $post->getAllPosts();
+        break;
+    case 9:
+        $post_id = $_POST['post_id'];
+        $post->getSinglePost($post_id);
         break;
 }

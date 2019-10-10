@@ -6,7 +6,7 @@ getAllPosts = () => {
       res.data.forEach(p => {
         output += `<div class="col-md-6 mb-3">
       <div class="card">
-        <div class="view overlay">
+        <div class="view overl\ay">
             <img
             class="card-img-top"
             src="../../../storage/postImg/${p.img}"

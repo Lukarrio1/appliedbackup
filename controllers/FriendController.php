@@ -148,6 +148,4 @@ switch ($function) {
         $search = $_POST['search'];
         $friend->getAllFriends($search);
         break;
-    default:
-        break;
 }

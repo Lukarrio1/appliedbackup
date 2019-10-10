@@ -84,9 +84,7 @@ getNotifications = () => {
   axios
     .get("../../../controllers/UserController.php?func=5")
     .then(res => {
-      setInterval(() => {
-        notificationTimer(res.data.length);
-      }, 10000);
+      // setInterval(() => notificationTimer(res.data.length), 10000);
       let output = "";
       res.data.forEach(n => {
         output += `<a class="dropdown-item ${n.class}" href="#!" id="notify${n.user_id}" data="${n.id}" data-ref_id="${n.ref_id}"><i class="${n.icon}"></i> ${n.notify}</a>`;
@@ -149,9 +147,7 @@ removeNotify = id => {
   fd.append("id", id);
   axios
     .post("../../../controllers/UserController.php?func=6", fd)
-    .then(res => {
-      getNotifications();
-    })
+    .then(res => getNotifications())
     .catch(err => {
       throw err;
     });
@@ -160,9 +156,7 @@ removeNotify = id => {
 notificationTimer = id => {
   axios
     .get("../../../controllers/UserController.php?func=5")
-    .then(result => {
-      result.data.length != id ? getNotifications() : null;
-    })
+    .then(result => (result.data.length != id ? getNotifications() : null))
     .catch(err => {
       throw err;
     });
