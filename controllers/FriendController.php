@@ -96,6 +96,7 @@ class Friend extends Base
             'notify' => $user['firstname'] . " is now following you.",
             'class' => 'newfollower',
             'icon' => 'fas fa-walking',
+            'ref_id' => $this->user,
         ];
         $friends = $this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn);
         if (empty($friends)) {

@@ -86,10 +86,10 @@ getNotifications = () => {
     .then(res => {
       setInterval(() => {
         notificationTimer(res.data.length);
-      }, 5000);
+      }, 10000);
       let output = "";
       res.data.forEach(n => {
-        output += `<a class="dropdown-item ${n.class}" href="#!" id="notify${n.user_id}" data="${n.id}"><i class="${n.icon}"></i> ${n.notify}</a>`;
+        output += `<a class="dropdown-item ${n.class}" href="#!" id="notify${n.user_id}" data="${n.id}" data-ref_id="${n.ref_id}"><i class="${n.icon}"></i> ${n.notify}</a>`;
       });
       let display = document.querySelector("#notificationdisplay");
       if (display) {
@@ -118,6 +118,20 @@ getNotifications = () => {
           });
         });
       }
+
+      let newlike = document.querySelectorAll(".newlike") || null;
+      if (newlike) {
+        newlike.forEach(n => {
+          n.addEventListener("click", () => {
+            let ref_id = $(`#${n.id}`).attr("data-ref_id");
+            let id = $(`#${n.id}`).attr("data");
+            localStorage.setItem("post_id", ref_id);
+            removeNotify(id);
+            location.href = "../../../resources/view/single_post.php";
+          });
+        });
+      }
+
       let ncout = document.querySelector("#notificationcount") || null;
       if (ncout) {
         ncout.innerHTML = res.data.length;
