@@ -34,7 +34,6 @@ class Friend extends Base
         $user = $this->find('users', $id, $this->conn);
         $friends = $this->belongsTo('friends', $id, $this->conn);
         foreach ($friends as $friend) {
-            // $is_friend = $this->pivot('friends', $this->user, $friend['id'], 'user_id', 'friend_id', $this->conn);
             $f = $this->find('users', $friend['friend_id'], $this->conn);
             $res[] = [
                 'firstname' => $f['firstname'],
@@ -42,7 +41,6 @@ class Friend extends Base
                 'id' => $f['id'],
                 'email' => $f['email'],
                 'is_active' => $f['is_active'],
-                // 'is_friend' => empty($is_friend) ? 0 : 1,
             ];
         }
         $posts = $this->belongsTo('posts', $id, $this->conn);
