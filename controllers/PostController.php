@@ -211,9 +211,30 @@ class Post extends Base
     {
         $id = $this->clean($d, $this->conn);
         $post = $this->find('posts', $id, $this->conn);
-        $owner = $this->find('users', $post['user_id'], $this->conn);
+        $owner = [
+            'firstname' => $this->find('users', $post['user_id'], $this->conn)['firstname'],
+            'lastname' => $this->find('users', $post['user_id'], $this->conn)['lastname'],
+            'id' => $this->find('users', $post['user_id'], $this->conn)['id'],
+        ];
         $comments = $this->dynamicBelongsTo('comments', 'post_id', $id, $this->conn);
         $likes = $this->dynamicBelongsTo('likes', 'post_id', $id, $this->conn);
+        foreach ($comments as $c) {
+            $user = $this->find('users', $c['user_id'], $this->conn);
+            $comment[] = [
+                'firstname' => $user['firstname'],
+                'lastname' => $user['lastname'],
+                'comment' => $c,
+            ];
+        }
+
+        $res = [
+            'owner' => $owner,
+            'likes' => $likes,
+            'comment' => $comment,
+            'post' => $post,
+        ];
+
+        exit(json_encode($res));
 
     }
 }
