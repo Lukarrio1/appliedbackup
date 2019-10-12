@@ -14,7 +14,12 @@ class User extends Base
 
     public function getAuthUser()
     {
-        exit(json_encode($this->find('users', $this->user['id'], $this->conn)));
+        $user = $this->find('users', $this->user['id'], $this->conn);
+        if (!empty($user)) {
+            exit(json_encode($user));
+        } else {
+            $this->removeState('user');
+        }
     }
 
     public function updateUser($f, $l, $e)

@@ -218,6 +218,7 @@ class Post extends Base
         ];
         $comments = $this->dynamicBelongsTo('comments', 'post_id', $id, $this->conn);
         $likes = $this->dynamicBelongsTo('likes', 'post_id', $id, $this->conn);
+        $comment = array();
         foreach ($comments as $c) {
             $user = $this->find('users', $c['user_id'], $this->conn);
             $comment[] = [
@@ -226,7 +227,6 @@ class Post extends Base
                 'comment' => $c,
             ];
         }
-
         $res = [
             'owner' => $owner,
             'likes' => $likes,

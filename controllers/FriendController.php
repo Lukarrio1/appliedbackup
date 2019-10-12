@@ -129,6 +129,7 @@ class Friend extends Base
 
 $function = isset($_GET['function']) ? (int) $_GET['function'] : null;
 $friend = new Friend;
+
 switch ($function) {
     case 1:
         $search = isset($_POST['search']) ? $_POST['search'] : null;
