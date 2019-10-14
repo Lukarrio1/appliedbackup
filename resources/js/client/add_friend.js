@@ -77,6 +77,7 @@ getSingleUser = id => {
   axios
     .post(`../../../controllers/FriendController.php?function=2`, fd)
     .then(res => {
+      console.log(res);
       let friendoutput = "";
       let postoutput = "";
       let is_active =
@@ -285,7 +286,9 @@ getSingleUser = id => {
       if (addcommentform) {
         addcommentform.addEventListener("submit", e => {
           e.preventDefault();
-          addComment();
+          let comment = document.querySelector("#addcomment").value || null;
+          let id = $("#addcomment").attr("data");
+          AddComment(comment, id);
         });
       }
 
@@ -331,7 +334,6 @@ followUser = id => {
   axios
     .post("../../../controllers/FriendController.php?function=3", fd)
     .then(res => {
-      console.log(res.data);
       getSingleUser(localStorage.getItem("temp_friend_id"));
     })
     .catch(err => {
@@ -353,9 +355,7 @@ likeUserPost = post_id => {
     });
 };
 
-addComment = () => {
-  let comment = $("#addcomment").val();
-  let post_id = $("#addcomment").attr("data");
+AddComment = (comment, post_id) => {
   let fd = new FormData();
   if (comment.length > 0) {
     fd.append("comment", comment);
@@ -373,6 +373,10 @@ addComment = () => {
         throw err;
       });
   }
+};
+
+tester = post_id => {
+  console.log("this is the post idea.", post_id);
 };
 
 deleteUserComment = id => {

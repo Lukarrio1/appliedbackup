@@ -25,7 +25,6 @@ createPost = () => {
     axios
       .post("../../../controllers/PostController.php?function=1", fd)
       .then(res => {
-        console.log(res.data);
         $("#posttitle").val("");
         $("#postbody").val("");
         $("#postimgout").val("");
@@ -49,7 +48,6 @@ getPosts = () => {
     .then(res => {
       let output = "";
       res.data.forEach(p => {
-        console.log(p.user.id);
         let comouput = "";
         p.comments.forEach(c => {
           let is_active = c.is_active == 1 ? "text-success" : "text-danger";
@@ -183,7 +181,6 @@ likePost = post_id => {
   axios
     .post("../../../controllers/PostController.php?function=3", fd)
     .then(res => {
-      console.log(res.data);
       getPosts();
     })
     .catch(err => {

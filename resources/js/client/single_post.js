@@ -1,8 +1,10 @@
 if (document.querySelector("#single_post")) {
   setTimeout(() => {
-    if (localStorage.getItem("post_id")) {
+    if (localStorage.getItem("post_id") != null) {
       let id = localStorage.getItem("post_id");
       getSinglePost(id);
+    } else {
+      location.href = "../../../resources/view/index.php";
     }
   }, 300);
 }
@@ -13,20 +15,31 @@ getSinglePost = id => {
   axios
     .post("../../../controllers/PostController.php?function=9", fd)
     .then(res => {
-      console.log(res.data);
       Comments = comment => {
         let comments = ``;
         comment.forEach(c => {
+          let is_active = c.is_active == 1 ? "text-success" : "text-danger";
+          let me =
+            Number(c.comment.user_id) === Number(res.data.owner.id)
+              ? "You"
+              : c.firstname;
+          let is_mine =
+            c.comment.user_id == res.data.owner.id ||
+            res.data.owner.id == res.data.post.user_id
+              ? "display:block"
+              : "display:none";
           comments += `<div class="col-12">
           <div class="row">
-          <div class="col-2">${c.firstname}</div>
+          <div class="col-2"><i class="fa fa-circle ${is_active}"></i>${me}</div>
           <div class="col-8">${c.comment.comment}</div>
-          <div class="col-2 text-right"><a href="#!" class="text-danger"><i class="fa fa-trash"></i></a></div>
+          <div class="col-2 text-right"><a href="#!" class="text-danger deletecomment" style="${is_mine}" id="deletecomment${c.comment.id}"><i class="fa fa-trash"></i></a></div>
           </div>
+          <hr>
           </div>`;
         });
         return comments;
       };
+
       Likes = likes => {
         let user_likes =
           likes.length > 0
@@ -34,7 +47,7 @@ getSinglePost = id => {
                 .length
             : 0;
         let liked = user_likes > 0 ? "danger" : "white";
-        return `<a href="#!" class="btn btn-outline-${liked} likepost"><i class="fas fa-heart text-danger">${likes.length}</i></a>`;
+        return `<a href="#!" class="btn btn-outline-${liked} likepost"><i class="fas fa-heart text-danger">&nbsp;${likes.length}</i></a>`;
       };
 
       let output = `<div class="col-md-10 offset-md-1 mt-2 mb-2">
@@ -53,7 +66,9 @@ getSinglePost = id => {
                 style="width:70%"
               />
             </div>
-            <div class="col-12 text-center">${res.data.post.title}</div>
+            <div class="col-12 text-center font-weight-bold h4 mt-1">${
+              res.data.post.title
+            }</div>
             <div class="col-12 pl-5">${res.data.post.body}</div>
             <div class="col-12 text-right"><small>
             Author ${res.data.owner.firstname}
@@ -80,7 +95,7 @@ getSinglePost = id => {
          <div class="col-12">
          <div class="md-form">
          <form id="acftsp">
-         <input type="text" class="form-control" placeholder="add comment." id="acfi"/>
+         <input type="text" class="form-control" placeholder="Add a comment." id="acfi"/>
          </form>
          </div>
          </div>
@@ -121,9 +136,19 @@ getSinglePost = id => {
           likePost(res.data.post.id);
         });
       }
+
+      let delcomment = document.querySelectorAll(".deletecomment") || null;
+      if (delcomment) {
+        delcomment.forEach(d => {
+          d.addEventListener("click", () => {
+            let id = d.id.substring(13);
+            deleteComment(id);
+          });
+        });
+      }
     })
     .catch(err => {
-      console.log(err);
+      throw err;
     });
 };
 
@@ -132,9 +157,7 @@ reportPost = id => {
   fd.append("id", id);
   axios
     .post("../../../controllers/PostController.php?function=7", fd)
-    .then(res => {
-      throw res;
-    })
+    .then(res => {})
     .catch(err => {
       throw err;
     });
@@ -159,6 +182,19 @@ likePost = post_id => {
   fd.append("post_id", post_id);
   axios
     .post("../../../controllers/PostController.php?function=3", fd)
+    .then(res => {
+      getSinglePost(localStorage.getItem("post_id"));
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+
+deleteComment = id => {
+  let fd = new FormData();
+  fd.append("id", id);
+  axios
+    .post("../../../controllers/PostController.php?function=4", fd)
     .then(res => {
       getSinglePost(localStorage.getItem("post_id"));
     })

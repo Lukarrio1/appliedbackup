@@ -55,7 +55,6 @@ updateUserInfo = () => {
     fd.append("firstname", firstname);
     fd.append("lastname", lastname);
     fd.append("email", email);
-
     axios
       .post("../../../controllers/UserController.php?func=2", fd)
       .then(res => {
@@ -130,6 +129,19 @@ getNotifications = () => {
         });
       }
 
+      let newComment = document.querySelectorAll(".newComment") || null;
+      if (newComment) {
+        newComment.forEach(n => {
+          n.addEventListener("click", () => {
+            let ref_id = $(`#${n.id}`).attr("data-ref_id");
+            let id = $(`#${n.id}`).attr("data");
+            localStorage.setItem("post_id", ref_id);
+            removeNotify(id);
+            location.href = "../../../resources/view/single_post.php";
+          });
+        });
+      }
+
       let ncout = document.querySelector("#notificationcount") || null;
       if (ncout) {
         ncout.innerHTML = res.data.length;
@@ -139,8 +151,6 @@ getNotifications = () => {
       throw err;
     });
 };
-
-getNotifications();
 
 removeNotify = id => {
   let fd = new FormData();
@@ -161,3 +171,5 @@ notificationTimer = id => {
       throw err;
     });
 };
+
+getNotifications();

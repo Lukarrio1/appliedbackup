@@ -215,6 +215,7 @@ class Post extends Base
             'firstname' => $this->find('users', $post['user_id'], $this->conn)['firstname'],
             'lastname' => $this->find('users', $post['user_id'], $this->conn)['lastname'],
             'id' => $this->find('users', $post['user_id'], $this->conn)['id'],
+            'is_active' => $this->find('users', $post['user_id'], $this->conn)['is_active'],
         ];
         $comments = $this->dynamicBelongsTo('comments', 'post_id', $id, $this->conn);
         $likes = $this->dynamicBelongsTo('likes', 'post_id', $id, $this->conn);
@@ -224,6 +225,7 @@ class Post extends Base
             $comment[] = [
                 'firstname' => $user['firstname'],
                 'lastname' => $user['lastname'],
+                'is_active' => $user['is_active'],
                 'comment' => $c,
             ];
         }
