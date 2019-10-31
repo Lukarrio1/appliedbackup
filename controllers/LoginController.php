@@ -32,16 +32,14 @@ class Login extends Base
 
     public function setSession()
     {
-        session_start();
-        $_SESSION['user'] = $this->user;
+        $this->addState('user', $this->user);
         $this->isActive(1, $this->user['id'], $this->conn);
     }
 
     public function logout()
     {
-        session_start();
         $this->isActive(0, $_SESSION['user']['id'], $this->conn);
-        session_destroy();
+        $this->removeState('user');
     }
 }
 

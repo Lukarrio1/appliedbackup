@@ -8,8 +8,7 @@ class Post extends Base
     public function __construct()
     {
         $this->conn = $this->connect();
-        session_start();
-        $this->user = $_SESSION['user'];
+        $this->user = $this->getState('user');
         $this->date = date('M j, Y h:ia', strtotime("now"));
     }
 
@@ -54,11 +53,9 @@ class Post extends Base
         foreach ($comments as $comment) {
             $this->delete('comments', $comment['id'], $this->conn);
         }
-
-        if (unlink("../storage/postImg/" . $post['img'])) {
-            if ($this->delete('posts', $id, $this->conn)) {
-                exit(json_encode(['status' => 1]));
-            }
+        unlink("../storage/postImg/" . $post['img']);
+        if ($this->delete('posts', $id, $this->conn)) {
+            exit(json_encode(['status' => 1]));
         }
 
     }
