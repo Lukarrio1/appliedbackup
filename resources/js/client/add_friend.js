@@ -331,6 +331,7 @@ getSingleUser = id => {
 followUser = id => {
   let fd = new FormData();
   fd.append("id", id);
+  console.log(id);
   axios
     .post("../../../controllers/FriendController.php?function=3", fd)
     .then(res => {
@@ -376,7 +377,7 @@ AddComment = (comment, post_id) => {
 };
 
 tester = post_id => {
-  console.log("this is the post idea.", post_id);
+  console.log("this is the post id", post_id);
 };
 
 deleteUserComment = id => {
