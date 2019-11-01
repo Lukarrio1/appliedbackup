@@ -13,16 +13,22 @@ class Friend extends Base
 
     public function searchFriend($search)
     {
-        $sql = "";
-        if ($search == "all") {
-            $sql = "SELECT * FROM users";
-        } else {
-            $sql = "SELECT * FROM users
+        $sql = $search == "all" ? "SELECT * FROM users" : $sql = "SELECT * FROM users
         WHERE email LIKE '%$search%' or firstname LIKE '%$search%'";
-        }
         $qry = mysqli_query($this->conn, $sql);
         $res = mysqli_fetch_all($qry, MYSQLI_ASSOC);
-        exit(json_encode($res));
+        $users = array();
+        foreach ($res as $r) {
+            $f = $this->belongsTo('deleted_users', $r['id'], $this->conn)[0];
+            $users[] = [
+                'email' => count($f) > 0 ? $f['email'] : $r['email'],
+                'firstname' => $r['firstname'],
+                'lastname' => $r['lastname'],
+                'id' => $r['id'],
+                'is_active' => $r['is_active'],
+            ];
+        }
+        exit(json_encode($users));
     }
 
     public function singleFriend($id)
@@ -33,12 +39,16 @@ class Friend extends Base
         $user = $this->find('users', $id, $this->conn);
         $friends = $this->belongsTo('friends', $id, $this->conn);
         foreach ($friends as $friend) {
+            $id = $friend['id'];
+            $sql = "SELECT * FROM deleted_users WHERE user_id='$id'";
+            $qry = mysqli_query($this->conn, $sql);
+            $res = mysqli_fetch_assoc($qry);
             $f = $this->find('users', $friend['friend_id'], $this->conn);
             $res[] = [
                 'firstname' => $f['firstname'],
                 'lastname' => $f['lastname'],
                 'id' => $f['id'],
-                'email' => $f['email'],
+                'email' => !empty($res) ? $res['email'] : $f['email'],
                 'is_active' => $f['is_active'],
             ];
         }
@@ -69,11 +79,12 @@ class Friend extends Base
         }
         $is_friend = empty($this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn)) ? 0 : 1;
         $array = array();
+        $is_deleted = $this->belongsTo('deleted_users', $id, $this->conn)[0];
         $array = [
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
             'id' => $user['id'],
-            'email' => $user['email'],
+            'email' => count($is_deleted) > 0 ? $is_deleted['email'] : $user['email'],
             'is_active' => $user['is_active'],
             'friends' => $res,
             'posts' => $post_arr,

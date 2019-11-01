@@ -185,9 +185,9 @@ deleteUser = () => {
   axios
     .post("../../../controllers/UserController.php?func=7")
     .then(res => {
-      console.log(res.data);
+      location.href = "../../view/login.php";
     })
     .catch(err => {
-      console.log(err);
+      throw err;
     });
 };
