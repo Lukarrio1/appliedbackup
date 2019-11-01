@@ -13,20 +13,21 @@ class Login extends Base
 
     public function login($e, $password)
     {
+
         $npassword = sha1($this->clean($password, $this->conn));
         $email = $this->clean($e, $this->conn);
         if ($this->isEmail($email) == 1 && $this->isPassword($password) == 1) {
             $login_sql = "SELECT * FROM users WHERE email='$email' AND password='$npassword'";
             $login_qry = mysqli_query($this->conn, $login_sql);
             $this->user = mysqli_fetch_assoc($login_qry);
-            if (mysqli_num_rows($login_qry) < 1) {
+            if (mysqli_num_rows($login_qry) < 1 || $this->isDeleted($this->user['id'], $this->conn) == 1) {
                 exit(json_encode(['login' => false]));
             } else {
                 $this->setSession();
                 exit(json_encode(['login' => true]));
             }
         } else {
-            exit(json_encode(['login' => 0]));
+            exit(json_encode(['login' => false]));
         }
     }
 
@@ -38,7 +39,7 @@ class Login extends Base
 
     public function logout()
     {
-        $this->isActive(0, $_SESSION['user']['id'], $this->conn);
+        $this->isActive(0, $this->getState('user')['id'], $this->conn);
         $this->removeState('user');
     }
 }

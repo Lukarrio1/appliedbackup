@@ -7,8 +7,7 @@ class User extends Base
 
     public function __construct()
     {
-        session_start();
-        $this->user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+        $this->user = $this->getState('user') != 0 ? $this->getState('user') : null;
         $this->conn = $this->connect();
     }
 
@@ -44,7 +43,7 @@ class User extends Base
         $qry = mysqli_query($this->conn, $sql);
         $res = mysqli_fetch_assoc($qry);
         if (mysqli_num_rows($qry) > 0) {
-            $this->addState('user_data', $res);
+            $this->mail('Password Reset', 'please copy the reset key <br> Reset Key :' . $res['r_key'], $email);
             exit(json_encode(['status' => 1]));
         } else {
             exit(json_encode(['status' => 0]));
@@ -73,7 +72,15 @@ class User extends Base
     public function seenNotify($id)
     {
         if ($this->removeNotify($id, $this->conn) == 1) {
-            return 1;
+            exit(json_encode(['status' => 1]));
+        }
+    }
+
+    public function deleteAccount()
+    {
+        if ($this->deleteUser($this->user['id'], $this->user['email'], $this->conn) == 1) {
+            $this->removeState('user');
+            exit(json_encode(['status' => 200]));
         }
     }
 
@@ -107,5 +114,8 @@ switch ($function) {
     case 6:
         $id = $_POST['id'];
         $user->seenNotify($id);
+        break;
+    case 7:
+        $user->deleteAccount();
         break;
 }

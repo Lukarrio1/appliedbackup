@@ -8,8 +8,7 @@ class Friend extends Base
     public function __construct()
     {
         $this->conn = $this->connect();
-        session_start();
-        $this->user = $_SESSION['user']['id'];
+        $this->user = $this->getState('user')['id'];
     }
 
     public function searchFriend($search)

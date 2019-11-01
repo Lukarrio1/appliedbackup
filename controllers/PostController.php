@@ -9,7 +9,7 @@ class Post extends Base
     {
         $this->conn = $this->connect();
         $this->user = $this->getState('user');
-        $this->date = date('M j, Y h:ia', strtotime("now"));
+        $this->date = $this->getDate();
     }
 
     public function createPost($t, $b)

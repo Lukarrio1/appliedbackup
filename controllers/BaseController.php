@@ -7,6 +7,7 @@ require_once '../traits/sanitize.php';
 require_once '../traits/file.php';
 require_once '../traits/tempStorage.php';
 require_once '../traits/Notification.php';
+require_once '../traits/User.php';
 
 require '../vendor/phpmailer/phpmailer/src/Exception.php';
 require '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
@@ -25,6 +26,7 @@ class Base extends Database
     use File;
     use State;
     use Notification;
+    use User_trait;
 
     public function getDate()
     {

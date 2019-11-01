@@ -25,10 +25,11 @@ emailEnter = () => {
     axios
       .post("../../../controllers/UserController.php?func=3", fd)
       .then(res => {
-        if (res.data.status == 1) {
-          location.href =
-            "../../../resources/view/password_resets/enter_rkey.php";
-        }
+        console.log(res.data);
+        // if (res.data.status == 1) {
+        location.href =
+          "../../../resources/view/password_resets/enter_rkey.php";
+        // }
       })
       .catch(err => {
         console.log(err.message);

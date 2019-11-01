@@ -173,3 +173,21 @@ notificationTimer = id => {
 };
 
 getNotifications();
+
+var deleteuser = document.querySelector("#deleteuser") || null;
+if (deleteuser) {
+  deleteuser.addEventListener("click", () => {
+    deleteUser();
+  });
+}
+
+deleteUser = () => {
+  axios
+    .post("../../../controllers/UserController.php?func=7")
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

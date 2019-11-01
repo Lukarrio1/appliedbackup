@@ -63,7 +63,11 @@ include '../../core/user.php';
                     </p>
                 </div>
                 <div class="card-footer bg-white">
-
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <a href="#!" class="btn btn-danger" id="deleteuser" title="Delete Account"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </div>
                 </div>
 
             </div>

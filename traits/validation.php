@@ -18,7 +18,7 @@ trait validator
             $res = mysqli_fetch_assoc($qry);
             return $res['email'] == $email ? 1 : 0;
         } else {
-            return 0;
+            return 1;
         }
     }
 

@@ -27,12 +27,6 @@ trait Helpers
         return mysqli_num_rows($qry) > 0 ? $res : [];
     }
 
-    function isActive($active, $id, $con)
-    {
-        $sql = "UPDATE users set is_active ='$active' where id='$id'";
-        return mysqli_query($con, $sql) ? 1 : 0;
-    }
-
     function belongsTo($table, $by, $con)
     {
         $sql = "SELECT * FROM $table WHERE user_id ='$by'";

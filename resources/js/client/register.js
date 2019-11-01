@@ -62,6 +62,7 @@ signUp = () => {
     axios
       .post("../../../controllers/RegisterController.php", fd)
       .then(res => {
+        console.log(res.data);
         let status = res.data.register;
         let error = res.data;
         if (status == 1) {

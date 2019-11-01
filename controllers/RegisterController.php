@@ -9,16 +9,15 @@ class Register extends Base
     {
         $this->conn = $this->connect();
         $this->_key = str_shuffle('abcdefghijklmnopqrstuvwyz');
-        $this->date = date('M j, Y h:ia', strtotime("now"));
+        $this->date = $this->getDate();
     }
 
     public function register($f, $l, $e, $p)
     {
         $fname = $this->clean($f, $this->conn);
         $lname = $this->clean($l, $this->conn);
-        $email = $this->clean($e, $this->conn);
+        $email = $this->isEmail($e) == 1 ? $this->clean($e, $this->conn) : null;
         $password = $this->clean($p, $this->conn);
-
         if ($this->isEmailInUse($email, $this->conn) == 1) {
             exit(json_encode([
                 'Error' => 'Email is already in use.',
@@ -26,11 +25,10 @@ class Register extends Base
             ]));
         } else {
             $sql = "INSERT INTO users (email,password,firstname,lastname,r_key,created_at,is_active) VALUES('$email','$password','$fname','$lname','$this->_key','$this->date',0)";
-            if (mysqli_query($this->conn, $sql)) {
-                // $user = $this->dynamicBelongsTo('users', 'email', $email, $this->conn);
-                // $this->addState('user', $user);
-                exit(json_encode(['register' => 1]));
-            }
+            $qry = mysqli_query($this->conn, $sql);
+            // $user = $this->dynamicBelongsTo('users', 'email', $email, $this->conn);
+            // $this->addState('user', $user);
+            exit(json_encode(['register' => 1]));
 
         }
     }
