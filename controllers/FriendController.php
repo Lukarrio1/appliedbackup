@@ -8,7 +8,7 @@ class Friend extends Base
     public function __construct()
     {
         $this->conn = $this->connect();
-        $this->user = $this->getState('user')['id'];
+        $this->user = (int) $this->getState('user')['id'];
     }
 
     public function searchFriend($search)
@@ -84,7 +84,7 @@ class Friend extends Base
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
             'id' => $user['id'],
-            'email' => count($is_deleted) > 0 ? $is_deleted['email'] : $user['email'],
+            'email' => !empty($is_deleted) ? $is_deleted['email'] : $user['email'],
             'is_active' => $user['is_active'],
             'friends' => $res,
             'posts' => $post_arr,
@@ -104,7 +104,7 @@ class Friend extends Base
             'notify' => $user['firstname'] . " is now following you.",
             'class' => 'newfollower',
             'icon' => 'fas fa-walking',
-            'ref_id' => $this->user,
+            'ref_id' => $id,
         ];
         $friends = $this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn);
         if (empty($friends)) {
@@ -114,7 +114,7 @@ class Friend extends Base
                 exit(json_encode(['friend' => 1]));
             }
         } else {
-            if ($this->delete('friends', $friends['id'], $this->conn)) {
+            if ($this->delete('friends', $friends['id'], $this->conn) == 1) {
                 exit(json_encode(['friend' => 0]));
             }
         }
@@ -150,7 +150,7 @@ switch ($function) {
         $friend->singleFriend($id);
         break;
     case 3:
-        $id = $_POST['id'];
+        $id = (int) $_POST['id'];
         $friend->followUser($id);
         break;
     case 4:
