@@ -21,7 +21,7 @@ class Friend extends Base
         foreach ($res as $r) {
             $f = $this->belongsTo('deleted_users', $r['id'], $this->conn)[0];
             $users[] = [
-                'email' => count($f) > 0 ? $f['email'] : $r['email'],
+                'email' => !empty($f) ? $f['email'] : $r['email'],
                 'firstname' => $r['firstname'],
                 'lastname' => $r['lastname'],
                 'id' => $r['id'],
@@ -33,6 +33,7 @@ class Friend extends Base
 
     public function singleFriend($id)
     {
+        // exit(json_encode(['id' => $id]));
         $res = array();
         $post_arr = array();
         $comments = array();
@@ -77,7 +78,8 @@ class Friend extends Base
 
             ];
         }
-        $is_friend = empty($this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn)) ? 0 : 1;
+        $is_friend = (int) empty($this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn)) ? 0 : 1;
+        // exit(json_encode(['user_id' => $this->user]));
         $array = array();
         $is_deleted = $this->belongsTo('deleted_users', $id, $this->conn)[0];
         $array = [
@@ -147,6 +149,7 @@ switch ($function) {
         break;
     case 2:
         $id = isset($_POST['id']) ? (int) $_POST['id'] : null;
+        // exit(json_encode(['id' => $id]));
         $friend->singleFriend($id);
         break;
     case 3:

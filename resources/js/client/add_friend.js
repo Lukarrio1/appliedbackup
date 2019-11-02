@@ -65,6 +65,7 @@ if (document.querySelector("#singleuserpage")) {
   setTimeout(() => {
     if (localStorage.getItem("temp_friend_id")) {
       let id = localStorage.getItem("temp_friend_id");
+      // console.log("friend_id:", id);
       getSingleUser(id);
     }
   }, 300);
@@ -77,6 +78,7 @@ getSingleUser = id => {
   axios
     .post(`../../../controllers/FriendController.php?function=2`, fd)
     .then(res => {
+      // console.log(res.data);
       let friendoutput = "";
       let postoutput = "";
       let is_active =
@@ -330,7 +332,6 @@ getSingleUser = id => {
 followUser = id => {
   let fd = new FormData();
   fd.append("id", id);
-  console.log(id);
   axios
     .post("../../../controllers/FriendController.php?function=3", fd)
     .then(res => {

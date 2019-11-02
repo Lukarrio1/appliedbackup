@@ -148,7 +148,8 @@ getPosts = () => {
         likepost.forEach(l => {
           l.addEventListener("click", () => {
             let post_id = l.id.substring(8);
-            likePost(post_id);
+            LikePost(post_id);
+            // console.log(post_id);
           });
         });
       }
@@ -175,16 +176,17 @@ getPosts = () => {
     });
 };
 
-likePost = post_id => {
+LikePost = post_id => {
   let fd = new FormData();
   fd.append("post_id", post_id);
   axios
     .post("../../../controllers/PostController.php?function=3", fd)
     .then(res => {
       getPosts();
+      console.log(res.data);
     })
     .catch(err => {
-      throw err;
+      console.log(err);
     });
 };
 
