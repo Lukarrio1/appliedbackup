@@ -149,7 +149,6 @@ getPosts = () => {
           l.addEventListener("click", () => {
             let post_id = l.id.substring(8);
             LikePost(post_id);
-            // console.log(post_id);
           });
         });
       }
@@ -183,10 +182,9 @@ LikePost = post_id => {
     .post("../../../controllers/PostController.php?function=3", fd)
     .then(res => {
       getPosts();
-      console.log(res.data);
     })
     .catch(err => {
-      console.log(err);
+      throw err;
     });
 };
 

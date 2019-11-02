@@ -33,7 +33,6 @@ class Friend extends Base
 
     public function singleFriend($id)
     {
-        // exit(json_encode(['id' => $id]));
         $res = array();
         $post_arr = array();
         $comments = array();
@@ -79,14 +78,13 @@ class Friend extends Base
             ];
         }
         $is_friend = (int) empty($this->pivot('friends', $this->user, $id, 'user_id', 'friend_id', $this->conn)) ? 0 : 1;
-        // exit(json_encode(['user_id' => $this->user]));
         $array = array();
-        $is_deleted = $this->belongsTo('deleted_users', $id, $this->conn)[0];
+        $is_deleted = $this->belongsTo('deleted_users', $id, $this->conn);
         $array = [
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
             'id' => $user['id'],
-            'email' => !empty($is_deleted) ? $is_deleted['email'] : $user['email'],
+            'email' => count($is_deleted) > 0 ? $is_deleted[0]['email'] : $user['email'],
             'is_active' => $user['is_active'],
             'friends' => $res,
             'posts' => $post_arr,
@@ -144,12 +142,11 @@ $friend = new Friend;
 
 switch ($function) {
     case 1:
-        $search = isset($_POST['search']) ? $_POST['search'] : null;
+        $search = isset($_POST['search']) ? trim($_POST['search']) : null;
         $friend->searchFriend($search);
         break;
     case 2:
         $id = isset($_POST['id']) ? (int) $_POST['id'] : null;
-        // exit(json_encode(['id' => $id]));
         $friend->singleFriend($id);
         break;
     case 3:

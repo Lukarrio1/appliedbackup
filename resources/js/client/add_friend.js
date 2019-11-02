@@ -332,6 +332,7 @@ getSingleUser = id => {
 followUser = id => {
   let fd = new FormData();
   fd.append("id", id);
+  console.log(id);
   axios
     .post("../../../controllers/FriendController.php?function=3", fd)
     .then(res => {

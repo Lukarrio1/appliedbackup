@@ -26,8 +26,6 @@ class Register extends Base
         } else {
             $sql = "INSERT INTO users (email,password,firstname,lastname,r_key,created_at,is_active) VALUES('$email','$password','$fname','$lname','$this->_key','$this->date',0)";
             $qry = mysqli_query($this->conn, $sql);
-            // $user = $this->dynamicBelongsTo('users', 'email', $email, $this->conn);
-            // $this->addState('user', $user);
             exit(json_encode(['register' => 1]));
 
         }

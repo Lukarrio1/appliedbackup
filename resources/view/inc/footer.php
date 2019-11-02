@@ -50,6 +50,7 @@
 <script src="../../../resources/js/client/post.js"></script>
 <script src="../../../resources/js/client/allposts.js"></script>
 <script src="../../../resources/js/client/single_post.js"></script>
+<script src="../../../resources/js/client/friends.js"></script>
 </body>
 
 </html>
