@@ -50,7 +50,7 @@ include '../../core/user.php';
 
                 <!-- Avatar -->
                 <div class="avatar mx-auto white">
-                    <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded-circle" alt="woman avatar">
+                    <img src="" class="rounded-circle" alt="woman avatar" id="profileImageOut">
                 </div>
 
                 <!-- Content -->
@@ -58,12 +58,32 @@ include '../../core/user.php';
                     <!-- Name -->
                     <h4 class="card-title"> <span id="usercardfname"></span>&nbsp;<span id="usercardlname"></span><br>
                         <small> <span id="usercardemail"></span></small></h4>
-                    <p>
-
-                    </p>
                 </div>
                 <div class="card-footer bg-white">
                     <div class="row">
+                        <div class="col-12 md-form text-center">
+                            <form id="uploadProPic">
+                            <div class="file-field">
+                            <div class="btn btn-primary btn-sm float-left">
+                                <span>Choose file</span>
+                                <input
+                                    type="file"
+                                    id="profileImgIn"
+                                    required
+                                />
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input
+                                    class="file-path validate"
+                                    type="text"
+                                    placeholder="Upload your file"
+                                    id="profileImgOut"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+                            </form>
+                        </div>
                         <div class="col-12 text-center">
                             <a href="#!" class="btn btn-danger" id="deleteuser" title="Delete Account"><i class="fa fa-trash"></i></a>
                         </div>

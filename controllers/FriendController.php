@@ -19,9 +19,9 @@ class Friend extends Base
         $res = mysqli_fetch_all($qry, MYSQLI_ASSOC);
         $users = array();
         foreach ($res as $r) {
-            $f = $this->belongsTo('deleted_users', $r['id'], $this->conn)[0];
+            $f = $this->belongsTo('deleted_users', $r['id'], $this->conn);
             $users[] = [
-                'email' => !empty($f) ? $f['email'] : $r['email'],
+                'email' => count($f) > 0 ? $f[0]['email'] : $r['email'],
                 'firstname' => $r['firstname'],
                 'lastname' => $r['lastname'],
                 'id' => $r['id'],

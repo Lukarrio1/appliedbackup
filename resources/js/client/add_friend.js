@@ -255,7 +255,7 @@ getSingleUser = id => {
       if (follow) {
         follow.addEventListener("click", () => {
           let id = follow.id.substring(6);
-          followUser(id);
+          FollowUser(id);
         });
       }
       let followfriend = document.querySelectorAll(".viewfriend") || null;
@@ -329,13 +329,14 @@ getSingleUser = id => {
     });
 };
 
-followUser = id => {
+FollowUser = id => {
   let fd = new FormData();
   fd.append("id", id);
   console.log(id);
   axios
     .post("../../../controllers/FriendController.php?function=3", fd)
     .then(res => {
+      console.log(res.data);
       getSingleUser(localStorage.getItem("temp_friend_id"));
     })
     .catch(err => {

@@ -84,6 +84,19 @@ class User extends Base
         }
     }
 
+    public function UploadProImg()
+    {
+        $img = $this->storeImage('profile_img');
+        $id = $this->user['id'];
+        unlink('../storage/postImg/' . $this->user['img']);
+        $sql = "UPDATE users set img='$img' WHERE id='$id'";
+        if (mysqli_query($this->conn, $sql)) {
+            exit(json_encode(['upload Img' => 1]));
+        } else {
+            exit(json_encode(['uplaod Img' => 0]));
+        }
+    }
+
 }
 
 $function = isset($_GET['func']) ? (int) $_GET['func'] : null;
@@ -117,5 +130,8 @@ switch ($function) {
         break;
     case 7:
         $user->deleteAccount();
+        break;
+    case 8:
+        $user->UploadProImg();
         break;
 }

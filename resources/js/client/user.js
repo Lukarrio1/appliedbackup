@@ -10,7 +10,10 @@ getLoggedUser = () => {
       $("#usercardfname").html(res.data.firstname);
       $("#usercardlname").html(res.data.lastname);
       $("#usercardemail").html(res.data.email);
-      // $("#numberofpost").html(res.data.post_count);
+      $("#profileImageOut").attr(
+        "src",
+        "../../../storage/profile_img/" + res.data.img
+      );
       $("#numberoffriends").html(res.data.friend_count);
     })
     .catch(err => {
@@ -189,5 +192,35 @@ deleteUser = () => {
     })
     .catch(err => {
       throw err;
+    });
+};
+
+var profileImgIn = document.querySelector("#profileImgIn") || null;
+var profileImgOut = document.querySelector("#profileImgOut") || null;
+if (profileImgIn && profileImgOut) {
+  profileImgIn.addEventListener("change", e => {
+    let name = e.target.files[0].name;
+    TemPic(e.target, "profileImageOut");
+    profileImgOut.value = name;
+    setTimeout(() => {
+      uploadProfileImg();
+      profileImgOut.value = "";
+    }, 3000);
+  });
+}
+
+uploadProfileImg = () => {
+  let fd = new FormData();
+  fd.append("img", state.img.files[0]);
+  axios
+    .post("../../../controllers/UserController.php?func=8", fd)
+    .then(res => {
+      iziToast.success({
+        message: "Img uploaded successfully.",
+        position: "topCenter"
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
 };
