@@ -26,6 +26,7 @@ class Friend extends Base
                 'lastname' => $r['lastname'],
                 'id' => $r['id'],
                 'is_active' => $r['is_active'],
+                'is_del' => count($f) > 0 ? 1 : 0,
             ];
         }
         exit(json_encode($users));

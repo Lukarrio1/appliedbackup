@@ -79,6 +79,7 @@ class User extends Base
     public function deleteAccount()
     {
         if ($this->deleteUser($this->user['id'], $this->user['email'], $this->conn) == 1) {
+            $this->isActive(0, $this->user['id'], $this->conn);
             $this->removeState('user');
             exit(json_encode(['status' => 200]));
         }
@@ -93,7 +94,7 @@ class User extends Base
         if (mysqli_query($this->conn, $sql)) {
             exit(json_encode(['upload Img' => 1]));
         } else {
-            exit(json_encode(['uplaod Img' => 0]));
+            exit(json_encode(['upload Img' => 0]));
         }
     }
 
@@ -133,5 +134,8 @@ switch ($function) {
         break;
     case 8:
         $user->UploadProImg();
+        break;
+    default:
+
         break;
 }

@@ -7,7 +7,7 @@ include '../../core/user.php';
     <div class="row mt-5">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-white">
                      <div class="row">
                          <div class="col-md-11">
                                 <div class="md-form">
