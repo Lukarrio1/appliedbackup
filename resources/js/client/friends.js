@@ -18,10 +18,11 @@ searchFriends = (search = "all") => {
     .post("../../../controllers/FriendController.php?function=4", fd)
     .then(res => {
       let output = "";
+      let newfriend = res.data.filter(f => f.is_friend == 1);
       if (allfriendsCount) {
-        allfriendsCount.innerHTML = res.data.length || 0;
+        allfriendsCount.innerHTML = newfriend.length || 0;
       }
-      res.data.forEach(f => {
+      newfriend.forEach(f => {
         let is_active = f.is_active == 1 ? "success" : "danger";
         output += `
      <li class="list-group-item">
@@ -57,7 +58,7 @@ searchFriends = (search = "all") => {
       }
     })
     .catch(err => {
-      console.log(err);
+      throw err;
     });
 };
 

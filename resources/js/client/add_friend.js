@@ -14,11 +14,11 @@ friendSearch = (Search = "all", sres = 0) => {
     .post("../../../controllers/FriendController.php?function=1", fd)
     .then(res => {
       let output = "";
-      sres.innerHTML =
-        Search == "all" || Search.length < 1 ? 0 : res.data.length;
       let newarray = res.data.filter(
         s => s.id != localStorage.getItem("user_id")
       );
+      sres.innerHTML =
+        Search == "all" || Search.length < 1 ? 0 : newarray.length;
       newarray.forEach(s => {
         let online =
           s.is_active == 1
@@ -92,7 +92,7 @@ getSingleUser = id => {
       output += ` <div class="card testimonial-card">
       <div class="card-up  light-blue accent-2"></div>
       <div class="avatar mx-auto white">
-          <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg" class="rounded" alt="woman avatar">
+          <img src="../../../storage/profile_img/${res.data.img}" class="rounded" alt="${res.data.img}">
       </div>
       <div class="card-body">
           <!-- Name -->

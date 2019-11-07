@@ -20,14 +20,18 @@ class Friend extends Base
         $users = array();
         foreach ($res as $r) {
             $f = $this->belongsTo('deleted_users', $r['id'], $this->conn);
-            $users[] = [
-                'email' => count($f) > 0 ? $f[0]['email'] : $r['email'],
-                'firstname' => $r['firstname'],
-                'lastname' => $r['lastname'],
-                'id' => $r['id'],
-                'is_active' => $r['is_active'],
-                'is_del' => count($f) > 0 ? 1 : 0,
-            ];
+            if (count($f) > 0) {
+                $user[] = [];
+            } else {
+                $users[] = [
+                    'email' => $r['email'],
+                    'firstname' => $r['firstname'],
+                    'lastname' => $r['lastname'],
+                    'id' => $r['id'],
+                    'is_active' => $r['is_active'],
+                    'is_del' => count($f) > 0 ? 1 : 0,
+                ];
+            }
         }
         exit(json_encode($users));
     }
@@ -84,6 +88,7 @@ class Friend extends Base
         $array = [
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
+            'img' => $user['img'],
             'id' => $user['id'],
             'email' => count($is_deleted) > 0 ? $is_deleted[0]['email'] : $user['email'],
             'is_active' => $user['is_active'],
@@ -133,7 +138,23 @@ class Friend extends Base
         }
         $qry = mysqli_query($this->conn, $sql);
         $res = mysqli_fetch_all($qry, MYSQLI_ASSOC);
-        exit(json_encode($res));
+        $users = array();
+        foreach ($res as $r) {
+            $f = $this->belongsTo('deleted_users', $r['id'], $this->conn);
+            $fr = $this->pivot('friends', $this->user, $r['id'], 'user_id', 'friend_id', $this->conn);
+            $users[] = [
+                'email' => count($f) > 0 ? $f[0]['email'] : $r['email'],
+                'firstname' => $r['firstname'],
+                'lastname' => $r['lastname'],
+                'id' => $r['id'],
+                'is_active' => $r['is_active'],
+                'is_del' => count($f) > 0 ? 1 : 0,
+                'is_friend' => !empty($fr) ? 1 : 0,
+                'my_id' => $this->user,
+            ];
+
+        }
+        exit(json_encode($users));
 
     }
 }
