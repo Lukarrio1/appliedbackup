@@ -43,7 +43,7 @@ getSinglePost = id => {
       Likes = likes => {
         let user_likes =
           likes.length > 0
-            ? likes.filter(l => Number(l.user_id) === Number(res.data.owner.id))
+            ? likes.filter(l => Number(l.user_id) == Number(res.data.owner.id))
                 .length
             : 0;
         let liked = user_likes > 0 ? "danger" : "white";

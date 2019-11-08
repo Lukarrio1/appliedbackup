@@ -86,7 +86,7 @@ getNotifications = () => {
   axios
     .get("../../../controllers/UserController.php?func=5")
     .then(res => {
-      setInterval(() => notificationTimer(res.data.length), 15000);
+      setInterval(() => notificationTimer(res.data.length), 20000);
       let output = "";
       res.data.forEach(n => {
         output += `<a class="dropdown-item ${n.class}" href="#!" id="notify${n.user_id}" data="${n.id}" data-ref_id="${n.ref_id}"><i class="${n.icon}"></i> ${n.notify}</a>`;
@@ -221,6 +221,6 @@ uploadProfileImg = () => {
       });
     })
     .catch(err => {
-      console.log(err);
+      throw err;
     });
 };

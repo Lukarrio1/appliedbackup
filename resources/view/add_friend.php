@@ -4,7 +4,7 @@ include '../../core/user.php';
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-10 offset-md-1 mt-5">
+        <div class="col-md-12 mt-5">
             <div class="card">
                 <div class="card-header bg-white">
                     <div class="row">

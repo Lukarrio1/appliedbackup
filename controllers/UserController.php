@@ -89,7 +89,8 @@ class User extends Base
     {
         $img = $this->storeImage('profile_img');
         $id = $this->user['id'];
-        unlink('../storage/postImg/' . $this->user['img']);
+        $user = $this->find('users', $id, $this->conn);
+        unlink('../storage/profile_img/' . $user['img']);
         $sql = "UPDATE users set img='$img' WHERE id='$id'";
         if (mysqli_query($this->conn, $sql)) {
             exit(json_encode(['upload Img' => 1]));
