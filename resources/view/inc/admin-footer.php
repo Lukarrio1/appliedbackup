@@ -1,11 +1,13 @@
 
+</main>
   <!--Copyright-->
-  <div class="footer-copyright py-3 text-center">
+  <!-- <div class="footer-copyright py-3 text-center">
     <div class="container-fluid">
       © 2018 Copyright: <a href="http://www.MDBootstrap.com"> MDBootstrap.com </a>
     </div>
-  </div>
-<!-- JQuery -->
+  </div> -->
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
@@ -13,8 +15,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="../../../resources/js/mdb.min.js"></script>
+<script >
+ // SideNav Initialization
+ $(".button-collapse").sideNav();
+
+new WOW().init();</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js"></script>
 <script defer>
     var state = {
@@ -51,10 +57,10 @@
             state.img = null
         }
     };
-    // SideNav Initialization
-    $(".button-collapse").sideNav();
 
-    new WOW().init();
 </script>
+<script src="../../../resources/js/admin/login.js"></script>
+<script src="../../../resources/js/admin/admin.js"></script>
+<script src="../../../resources/js/admin/dashboard.js"></script>
 </body>
 </html>

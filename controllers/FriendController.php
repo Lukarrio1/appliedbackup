@@ -150,7 +150,6 @@ class Friend extends Base
                 'is_active' => $r['is_active'],
                 'is_del' => count($f) > 0 ? 1 : 0,
                 'is_friend' => !empty($fr) ? 1 : 0,
-                'my_id' => $this->user,
             ];
 
         }
@@ -176,7 +175,7 @@ switch ($function) {
         $friend->followUser($id);
         break;
     case 4:
-        $search = $_POST['search'];
+        $search = isset($_POST['search']) ? trim($_POST['search']) : null;
         $friend->getAllFriends($search);
         break;
 }

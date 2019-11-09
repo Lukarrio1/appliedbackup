@@ -27,9 +27,9 @@ trait validator
         return strlen($password) >= 6 ? 1 : 0;
     }
 
-    function isEmailAvail($email, $id, $con)
+    function isEmailAvail($table, $email, $id, $con)
     {
-        $sql = "SELECT * FROM users WHERE email='$email'";
+        $sql = "SELECT * FROM $table WHERE email='$email'";
         $qry = mysqli_query($con, $sql);
         $res = mysqli_fetch_assoc($qry);
         if ($res['id'] == $id) {

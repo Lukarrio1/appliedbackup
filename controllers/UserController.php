@@ -26,7 +26,7 @@ class User extends Base
         $fname = $this->clean($f, $this->conn);
         $lname = $this->clean($l, $this->conn);
         $email = $this->clean($e, $this->conn);
-        if ($this->isEmailAvail($email, $this->user['id'], $this->conn) == 0) {
+        if ($this->isEmailAvail('users', $email, $this->user['id'], $this->conn) == 0) {
             exit(json_encode(['error' => 'Email is already in use.']));
         } else {
             $sql = "UPDATE users SET email='$email', firstname='$fname',lastname='$lname' WHERE id='" . $this->user['id'] . "'";
@@ -109,17 +109,17 @@ switch ($function) {
         $user->getAuthUser();
         break;
     case 2:
-        $fname = $_POST['firstname'];
-        $lname = $_POST['lastname'];
-        $email = $_POST['email'];
+        $fname = trim($_POST['firstname']);
+        $lname = trim($_POST['lastname']);
+        $email = trim($_POST['email']);
         $user->updateUser($fname, $lname, $email);
         break;
     case 3:
-        $email = $_POST['email'];
+        $email = trim($_POST['email']);
         $user->emailYours($email);
         break;
     case 4:
-        $_rkey = $_POST['r_key'];
+        $_rkey = trim($_POST['r_key']);
         $password = $_POST['password'];
         $user->passwordReset($_rkey, $password);
         break;

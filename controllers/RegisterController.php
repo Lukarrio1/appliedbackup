@@ -1,5 +1,5 @@
 <?php
-include '../controllers/BaseController.php';
+include_once '../controllers/BaseController.php';
 
 class Register extends Base
 {

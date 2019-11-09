@@ -1,5 +1,5 @@
 <?php
-require_once '../../controllers/BaseController.php';
+require_once '../controllers/BaseController.php';
 
 class Admin_login extends Base
 {
@@ -12,17 +12,17 @@ class Admin_login extends Base
     public function login($p, $e)
     {
         $password = sha1($this->clean($p, $this->conn));
-        $email = $this->isEmail($e) ? $this->clean($e, $this->email) : null;
-        $sql = "SELECT * FROM admins WHERE email='$email' AND password = '$password'";
+        $email = $this->isEmail($e) == 1 ? $this->clean($e, $this->conn) : null;
+        $sql = "SELECT * FROM admins WHERE email='$email' AND password ='$password'";
         $qry = mysqli_query($this->conn, $sql);
         $res = mysqli_fetch_assoc($qry);
         if (!empty($res)) {
             $this->addState('admin', $res);
             exit(json_encode(['status' => 200]));
         } else {
+            $this->createAdmin();
             exit(json_encode(['status' => 403]));
         }
-        $this->createAdmin();
     }
 
     public function createAdmin()
@@ -32,7 +32,7 @@ class Admin_login extends Base
         $password = sha1("admin123");
         $all = $this->all('admins', $this->conn);
         if (count($all) < 1) {
-            $sql = "INSERT INTO admins(name,email,password) VALUES('$name,$email,$password')";
+            $sql = "INSERT INTO admins(name,email,password) VALUES('$name','$email','$password')";
             if (mysqli_query($this->conn, $sql)) {
                 exit(json_encode(['status' => 200]));
             }
