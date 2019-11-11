@@ -56,6 +56,12 @@ class Admin_user extends Base
         $this->delete('users', $id, $this->conn);
         exit(json_encode(['status' => 200]));
     }
+
+    public function SingleUser($i)
+    {
+        $id = $this->clean($i, $this->conn);
+        exit(json_encode($this->find('users', $id, $this->conn)));
+    }
 }
 
 $func = isset($_GET['function']) ? (int) $_GET['function'] : null;
@@ -67,5 +73,8 @@ switch ($func) {
         break;
     case 2:
         $user->AdminDeleteUser($_POST['id']);
+        break;
+    case 3:
+        $user->SingleUser($_POST['id']);
         break;
 }

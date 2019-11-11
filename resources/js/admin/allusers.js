@@ -15,9 +15,9 @@ if (limit) {
   });
 }
 var userCount = document.querySelector("#allUserCount") || null;
-var allUsers = document.querySelector("#allUsers");
+var allUsers = document.querySelector("#allUsers") || null;
 
-UserSearch = async (search, lim = 100) => {
+UserSearch = async (search, lim) => {
   let fd = new FormData();
   fd.append("search", search);
   try {
@@ -38,6 +38,7 @@ UserSearch = async (search, lim = 100) => {
         p.is_deleted == 1
           ? `<span class="text-danger"><i class="fas fa-user-times"></i></span>`
           : "";
+
       output += `<tr>
         <th scope="row" class="text-center">${i}</th>
         <td class="text-center">${is_active}${is_deleted}</td>
@@ -48,10 +49,13 @@ UserSearch = async (search, lim = 100) => {
         <td class="text-center"><span class="badge badge-info">${p.friend_count}</span></td>
         <td><div class="row">
         <div class="col-6 text-right">
-        <a href="#!" class=" text-warning" title="Edit ${p.firstName}"><i class="fas fa-edit"></i></a>
+        <a href="#!" class="text-warning editUserBtn" title="Edit ${p.firstName}" data-toggle="modal" data-target="#userUpdateModal" id="editUser${p.id}">
+        <i class="fas fa-edit"></i></a>
         </div>
         <div class="col-6 text-left">
-        <a href="#!" class="deletedUser text-danger" id="user${p.id}" title="Delete ${p.firstName}"><i class="fas fa-trash"></i></a>
+        <a href="#!" class="deletedUser text-danger" id="user${p.id}" title="Delete ${p.firstName}">
+        <i class="fas fa-trash"></i>
+        </a>
         </div>
         </div></td>
     </tr>`;
@@ -72,8 +76,18 @@ UserSearch = async (search, lim = 100) => {
         });
       });
     }
+
+    let editUserBtn = document.querySelectorAll(".editUserBtn") || null;
+    if (editUserBtn) {
+      editUserBtn.forEach(e => {
+        e.addEventListener("click", () => {
+          state.user_id = e.id.substring(8);
+          PopulateUserForm(state.user_id);
+        });
+      });
+    }
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -83,12 +97,68 @@ DeleteUser = async id => {
   let fd = new FormData();
   fd.append("id", id);
   try {
-    let res = await axios.post(
+    await axios.post(
       "../../../controllers/adminUserController.php?function=2",
       fd
     );
-    console.log(res.data);
+    iziToast.error({
+      message: "User deleted successfully!",
+      position: "topCenter"
+    });
+
+    UserSearch(adminSearch.value, limit.value);
   } catch (err) {
     throw err;
+  }
+};
+
+var editUserForm = document.querySelector("#editUserForm") || null;
+if (editUserForm) {
+  editUserForm.addEventListener("submit", e => {
+    e.preventDefault();
+    UpdateUser();
+  });
+}
+var editUsersFields = document.querySelectorAll(".editUser") || null;
+UpdateUser = async () => {};
+
+PopulateUserForm = async id => {
+  let fd = new FormData();
+  fd.append("id", id);
+  try {
+    let res = await axios.post(
+      "../../../controllers/adminUserController.php?function=3",
+      fd
+    );
+    let keys = Object.keys(res.data);
+    keys.forEach(k => {
+      editUsersFields.forEach(e => {
+        if (k == e.name) {
+          e.value = res.data[k];
+        }
+      });
+    });
+    IsEmailAvail(res.data.email);
+    console.log(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+let userEmail = document.querySelector("#editUserEmail") || null;
+if (userEmail) {
+  userEmail.addEventListener("keyup", () => {
+    if (validateEmail(userEmail.value)) {
+      IsEmailAvail(userEmail.value);
+    }
+  });
+}
+
+IsEmailAvail = async email => {
+  let fd = new FormData();
+  fd.append("email", email);
+  try {
+  } catch (err) {
+    console.log(err);
   }
 };

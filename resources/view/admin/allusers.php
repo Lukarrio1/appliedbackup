@@ -2,17 +2,6 @@
 include_once '../../../resources/view/inc/admin-nav.php';
 include_once '../../../core/admin.php';
 ?>
-<style>
-.my-custom-scrollbar {
-position: relative;
-height: 380px;
-overflow: auto;
-overflow-x:hidden;
-}
-.table-wrapper-scroll-y {
-display: block;
-}
-</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12 mt-3">
@@ -65,6 +54,41 @@ display: block;
             </div>
         </div>
     </div>
+<div class="modal fade" id="userUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <div class="h3 text-center col-12 text-white font-weight-bold">Edit User</div>
+      </div>
+      <div class="modal-body">
+        <form id="editUserForm">
+          <div class="row">
+            <div class="col-md-6 md-form">
+              <input type="text" class="editUser form-control" name="firstname">
+            </div>
+            <div class="col-md-6 md-form">
+              <input type="text" class="editUser form-control" name="lastname">
+            </div>
+            <div class="col-md-12 md-form">
+              <input type="email" name="email" id="editUserEmail" class="editUser form-control">
+            </div>
+              <div class="col-md-6 md-form">
+                <input type="password" name="newPassword"  class="form-control editUserPassword" placeholder="New password">
+              </div>
+              <div class="col-md-6 md-form">
+                <input type="password" name="confirmPassword"  class="form-control editUserConfirm" placeholder="Confirm password">
+            </div>
+          </div>
+              <div class="col-md-12 text-center">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success">Save changes</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 <?php
 include_once '../../../resources/view/inc/admin-footer.php';
