@@ -25,7 +25,8 @@ new WOW().init();</script>
 <script defer>
     var state = {
         img: null,
-        user_id:null
+        user_id:null,
+        is_error:null
     }
     setTitle = (page = "") => {
         if (page) {

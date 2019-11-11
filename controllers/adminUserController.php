@@ -62,6 +62,30 @@ class Admin_user extends Base
         $id = $this->clean($i, $this->conn);
         exit(json_encode($this->find('users', $id, $this->conn)));
     }
+
+    public function EmailCheck($e, $i)
+    {
+        $email = $this->clean($e, $this->conn);
+        $id = $this->clean($i, $this->conn);
+        if ($this->isEmailAvail('users', $email, $id, $this->conn) == 0) {
+            exit(json_encode(['status' => 'Email is in use!', 'error' => 1]));
+        } else {
+            exit(json_encode(['status' => 200, 'error' => 0]));
+        }
+    }
+
+    public function UpdateUser($f, $l, $e, $i)
+    {
+        $firstName = $this->clean($f, $this->conn);
+        $lastName = $this->clean($l, $this->conn);
+        $email = $this->clean($e, $this->conn);
+        $id = $this->clean($i, $this->conn);
+        $sql = "UPDATE users set firstname='$firstName', lastname='$lastName', email='$email' WHERE id='$id'";
+        if (mysqli_query($this->conn, $sql)) {
+            exit(json_encode(['status' => 200]));
+        }
+
+    }
 }
 
 $func = isset($_GET['function']) ? (int) $_GET['function'] : null;
@@ -76,5 +100,11 @@ switch ($func) {
         break;
     case 3:
         $user->SingleUser($_POST['id']);
+        break;
+    case 4:
+        $user->EmailCheck($_POST['email'], $_POST['id']);
+        break;
+    case 5:
+        $user->UpdateUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['id']);
         break;
 }

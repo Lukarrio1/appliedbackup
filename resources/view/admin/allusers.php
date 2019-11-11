@@ -71,17 +71,11 @@ include_once '../../../core/admin.php';
               <input type="text" class="editUser form-control" name="lastname">
             </div>
             <div class="col-md-12 md-form">
-              <input type="email" name="email" id="editUserEmail" class="editUser form-control">
-            </div>
-              <div class="col-md-6 md-form">
-                <input type="password" name="newPassword"  class="form-control editUserPassword" placeholder="New password">
-              </div>
-              <div class="col-md-6 md-form">
-                <input type="password" name="confirmPassword"  class="form-control editUserConfirm" placeholder="Confirm password">
+              <input type="email" name="email" id="editUserEmail" class="form-control editUser">
             </div>
           </div>
-              <div class="col-md-12 text-center">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="col-md-12 text-center">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeUserEditModal">Close</button>
               <button type="submit" class="btn btn-success">Save changes</button>
             </div>
           </form>

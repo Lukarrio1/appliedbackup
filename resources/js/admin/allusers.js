@@ -25,6 +25,7 @@ UserSearch = async (search, lim) => {
       "../../../controllers/adminUserController.php?function=1",
       fd
     );
+    setInterval(() => UserUpdateInterval(data.data.length), 60000);
     allUsers.value = data.data.length;
     allUsers.innerHTML = "Show All Entries";
     let res = data.data.slice(0, lim);
@@ -119,8 +120,43 @@ if (editUserForm) {
     UpdateUser();
   });
 }
+
 var editUsersFields = document.querySelectorAll(".editUser") || null;
-UpdateUser = async () => {};
+var closeModal = $("#closeUserEditModal");
+
+UpdateUser = async () => {
+  let fd = new FormData();
+  let pass = false;
+  editUsersFields.forEach(f => {
+    if (f.value == "") {
+      iziToast.error({
+        message: `Field ${f.name} is invalid`,
+        position: "topCenter"
+      });
+      pass = false;
+    } else {
+      pass = true;
+      fd.append(f.name, f.value);
+    }
+  });
+  if (pass) {
+    fd.append("id", state.user_id);
+    try {
+      await axios.post(
+        "../../../controllers/adminUserController.php?function=5",
+        fd
+      );
+      closeModal.click();
+      iziToast.success({
+        message: "Profile Updated Successfully!",
+        position: "topCenter"
+      });
+      UserSearch(adminSearch.value || "all");
+    } catch (err) {
+      throw err;
+    }
+  }
+};
 
 PopulateUserForm = async id => {
   let fd = new FormData();
@@ -139,9 +175,8 @@ PopulateUserForm = async id => {
       });
     });
     IsEmailAvail(res.data.email);
-    console.log(res.data);
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -157,8 +192,31 @@ if (userEmail) {
 IsEmailAvail = async email => {
   let fd = new FormData();
   fd.append("email", email);
+  fd.append("id", state.user_id);
   try {
+    let res = await axios.post(
+      "../../../controllers/adminUserController.php?function=4",
+      fd
+    );
+    if (res.data.error == 1) {
+      iziToast.error({
+        message: res.data.status,
+        position: "topCenter"
+      });
+      state.is_error = true;
+    }
   } catch (err) {
-    console.log(err);
+    throw err;
+  }
+};
+
+UserUpdateInterval = async length => {
+  try {
+    let res = await axios.get(
+      "../../../controllers/adminUserController.php?function=1"
+    );
+    res.data.length != length ? UserSearch(adminSearch.value || "all") : "";
+  } catch (err) {
+    throw err;
   }
 };
