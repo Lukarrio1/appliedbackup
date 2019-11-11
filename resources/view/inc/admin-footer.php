@@ -62,5 +62,6 @@ new WOW().init();</script>
 <script src="../../../resources/js/admin/login.js"></script>
 <script src="../../../resources/js/admin/admin.js"></script>
 <script src="../../../resources/js/admin/dashboard.js"></script>
+<script src="../../../resources/js/admin/allusers.js"></script>
 </body>
 </html>

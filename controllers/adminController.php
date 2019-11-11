@@ -19,9 +19,14 @@ class Admin extends Base
     {
         $name = $this->clean($n, $this->conn);
         $email = $this->clean($e, $this->conn);
+        $id = $this->admin['id'];
         if ($this->isEmailAvail('admins', $email, $this->admin['id'], $this->conn) == 0) {
             exit(json_encode(['is_error' => 1, 'error' => 'Email already in use.']));
         } else {
+            $sql = "UPDATE admins SET name='$name', email='$email' WHERE id='$id'";
+            if (mysqli_query($this->conn, $sql)) {
+                exit(json_encode(['status' => 200]));
+            };
 
         }
     }

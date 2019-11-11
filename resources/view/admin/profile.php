@@ -5,7 +5,7 @@ include_once '../../../core/admin.php';
 
 <div class="container">
    <div class="row mt-5">
-       <div class="col-md-8 offset-md-2">
+       <div class="col-md-10 offset-md-1">
            <div class="card">
                <div class="card-header text-center text-white h3 font-weight-bold">
                     Edit Admin Info

@@ -48,12 +48,12 @@ if (editAdmin) {
   });
 }
 
-updateAdmin = async () => {
+updateAdmin = () => {
   let fd = new FormData();
   let fields = document.querySelectorAll(".edit-admin") || null;
   let pass = false;
   fields.forEach(f => {
-    if ((f.value = "")) {
+    if (f.value == "") {
       pass = false;
       iziToast.error({
         position: "topCenter",
@@ -65,14 +65,24 @@ updateAdmin = async () => {
     }
   });
   if (pass) {
-    try {
-      let res = await axios.post(
-        "../../../controllers/adminController.php?function=2",
-        fd
-      );
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    axios
+      .post("../../../controllers/adminController.php?function=2", fd)
+      .then(res => {
+        if (res.data.is_error == 1) {
+          iziToast.error({
+            position: "topCenter",
+            message: res.data.error
+          });
+        } else {
+          iziToast.success({
+            message: "Account Updated Successfully!",
+            position: "topCenter"
+          });
+        }
+        Admin();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
