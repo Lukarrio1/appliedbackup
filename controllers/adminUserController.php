@@ -60,7 +60,17 @@ class Admin_user extends Base
     public function SingleUser($i)
     {
         $id = $this->clean($i, $this->conn);
-        exit(json_encode($this->find('users', $id, $this->conn)));
+        $user = $this->find('users', $id, $this->conn);
+        $is_deleted = $this->belongsTo('deleted_users', $id, $this->conn);
+        $res = array();
+        $email = count($is_deleted) > 0 ? $is_deleted[0]['email'] : $user['email'];
+        $res = [
+            'email' => $email,
+            'firstname' => $user['firstname'],
+            'lastname' => $user['lastname'],
+            'id' => $user['id'],
+        ];
+        exit(json_encode($res));
     }
 
     public function EmailCheck($e, $i)
@@ -93,7 +103,8 @@ $user = new Admin_user;
 
 switch ($func) {
     case 1:
-        $user->AllUser($_POST['search']);
+        $search = isset($_POST['search']) ? $_POST['search'] : "all";
+        $user->AllUser($search);
         break;
     case 2:
         $user->AdminDeleteUser($_POST['id']);
@@ -106,5 +117,8 @@ switch ($func) {
         break;
     case 5:
         $user->UpdateUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['id']);
+        break;
+    default:
+        header('Location:../../../resources/view/404.php');
         break;
 }

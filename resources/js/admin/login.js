@@ -27,6 +27,10 @@ AdminLogin = () => {
       .post("../../../controllers/adminLoginController.php?function=1", fd)
       .then(res => {
         if (Number(res.data.status) == 403) {
+          iziToast.error({
+            message: "Incorrect credentials!",
+            position: "topCenter"
+          });
         } else {
           location.href = "../../../resources/view/admin/index.php";
         }

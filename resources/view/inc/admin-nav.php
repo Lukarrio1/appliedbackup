@@ -32,7 +32,7 @@
           <li><a class="collapsible-header waves-effect arrow-r" href="../../../resources/view/admin/allusers.php"><i class="fas fa-user"></i>Users</a>
           </li>
           <li>
-            <a class="collapsible-header waves-effect arrow-r"><i class="fas fa-book-dead"></i>Reported Posts</a>
+            <a class="collapsible-header waves-effect arrow-r" href="../../../resources/view/admin/reported_posts.php"><i class="fas fa-book-dead"></i>Reported Posts</a>
           </li>
         </ul>
       </li>

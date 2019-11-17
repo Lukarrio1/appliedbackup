@@ -1,12 +1,12 @@
 var adminSearch = document.querySelector("#admin-search") || null;
+var limit = document.querySelector("#limit") || null;
 if (adminSearch) {
   adminSearch.addEventListener("keyup", () => {
     let data = adminSearch.value.length > 0 ? adminSearch.value : "all";
-    UserSearch(data);
+    UserSearch(data, limit.value);
   });
 }
 
-var limit = document.querySelector("#limit") || null;
 if (limit) {
   limit.addEventListener("change", () => {
     let data = adminSearch.value.length > 0 ? adminSearch.value : "all";
@@ -26,8 +26,10 @@ UserSearch = async (search, lim) => {
       fd
     );
     setInterval(() => UserUpdateInterval(data.data.length), 60000);
-    allUsers.value = data.data.length;
-    allUsers.innerHTML = "Show All Entries";
+    if (allUsers) {
+      allUsers.value = data.data.length;
+      allUsers.innerHTML = "All users";
+    }
     let res = data.data.slice(0, lim);
     let output = "";
     res.forEach((p, i) => {
@@ -39,7 +41,6 @@ UserSearch = async (search, lim) => {
         p.is_deleted == 1
           ? `<span class="text-danger"><i class="fas fa-user-times"></i></span>`
           : "";
-
       output += `<tr>
         <th scope="row" class="text-center">${i}</th>
         <td class="text-center">${is_active}${is_deleted}</td>
@@ -73,7 +74,40 @@ UserSearch = async (search, lim) => {
       deletedUsers.forEach(d => {
         d.addEventListener("click", () => {
           let id = d.id.substring(4);
-          DeleteUser(id);
+          iziToast.question({
+            timeout: 20000,
+            color: "red",
+            close: false,
+            overlay: true,
+            displayMode: "once",
+            id: "question",
+            zindex: 999,
+            title: "Hey",
+            message: "Are you sure you want to delete that user?",
+            position: "center",
+            buttons: [
+              [
+                "<button><b>YES</b></button>",
+                function(instance, toast) {
+                  instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+                  DeleteUser(id);
+                },
+                true
+              ],
+              [
+                "<button>NO</button>",
+                function(instance, toast) {
+                  instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+                }
+              ]
+            ],
+            onClosing: function(instance, toast, closedBy) {
+              console.info("Closing | closedBy: " + closedBy);
+            },
+            onClosed: function(instance, toast, closedBy) {
+              console.info("Closed | closedBy: " + closedBy);
+            }
+          });
         });
       });
     }
@@ -166,6 +200,7 @@ PopulateUserForm = async id => {
       "../../../controllers/adminUserController.php?function=3",
       fd
     );
+    console.log(res.data);
     let keys = Object.keys(res.data);
     keys.forEach(k => {
       editUsersFields.forEach(e => {
@@ -203,7 +238,6 @@ IsEmailAvail = async email => {
         message: res.data.status,
         position: "topCenter"
       });
-      state.is_error = true;
     }
   } catch (err) {
     throw err;
@@ -215,7 +249,9 @@ UserUpdateInterval = async length => {
     let res = await axios.get(
       "../../../controllers/adminUserController.php?function=1"
     );
-    res.data.length != length ? UserSearch(adminSearch.value || "all") : "";
+    res.data.length != length
+      ? UserSearch(adminSearch.value || "all", limit.value)
+      : "";
   } catch (err) {
     throw err;
   }

@@ -175,6 +175,9 @@ class Post extends Base
     {
         $id = $this->clean($i, $this->conn);
         $user_id = $this->user['id'];
+        $user = $this->find('users', $user_id, $this->conn);
+        $post = $this->find('posts', $id, $this->conn);
+        $this->mail('Reported Post', "Your post titled " . $post['title'] . " was reported.", $this->conn);
         $sql = "INSERT INTO reports(post_id,user_id,created_at) VALUES('$id','$user_id','$this->date')";
         if (mysqli_query($this->conn, $sql)) {
             exit(json_encode(['report' => 1]));

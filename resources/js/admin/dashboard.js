@@ -18,5 +18,6 @@ dashBoard = () => {
       throw err;
     });
 };
+
 dashBoard();
 setInterval(() => dashBoard(), 60000);
