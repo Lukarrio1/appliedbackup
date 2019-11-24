@@ -24,7 +24,7 @@
       <!-- Logo -->
       <li>
         <div class="logo-wrapper waves-light text-center bg-white">
-          <!-- <a href="#" class="h3">Carrium Admin</a> -->
+          <a href="#" class=""><img src="../../../storage/carrium.png" style="height:110px"></a>
         </div>
       </li>
       <li>

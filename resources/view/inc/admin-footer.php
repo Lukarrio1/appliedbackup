@@ -59,7 +59,12 @@ new WOW().init();</script>
             state.img = null
         }
     };
-
+    /**
+     * Makes the materialized select work
+     */
+    $(document).ready(function() {
+    $(".mdb-select").materialSelect();
+    });
 </script>
 <script src="../../../resources/js/admin/login.js"></script>
 <script src="../../../resources/js/admin/admin.js"></script>

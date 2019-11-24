@@ -53,13 +53,13 @@ trait Helpers
      * returns all of the entries that belongs to or requested by the user.
      *
      * @param [string] $table
-     * @param [int] $by
+     * @param [int] $user_id
      * @param [Connection] $con
      * @return void
      */
-    function belongsTo($table, $by, $con)
+    function belongsTo($table, $user_id, $con)
     {
-        $sql = "SELECT * FROM $table WHERE user_id ='$by'";
+        $sql = "SELECT * FROM $table WHERE user_id ='$user_id'";
         $qry = mysqli_query($con, $sql);
         $res = mysqli_fetch_all($qry, MYSQLI_ASSOC);
         return mysqli_num_rows($qry) > 0 ? $res : [];

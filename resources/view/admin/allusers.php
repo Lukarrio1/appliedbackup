@@ -4,20 +4,20 @@ include_once '../../../core/admin.php';
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-12 mt-3">
+        <div class="col-sm-12 mt-3">
             <div class="card">
                 <div class="card-header bg-white">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-sm-8">
                             <div class="md-form mt-3">
                                 <input type="text" class="form-control" name="admin-search" id="admin-search" placeholder="User Search..">
                             </div>
                         </div>
-                        <div class="col-md-1 mt-4 text-center">
+                        <div class="col-sm-1 mt-4 text-center">
                             <span class="badge badge-primary" id="allUserCount">0</span>
                         </div>
-                        <div class="col-md-3 text-center mt-4">
-                            <select name="limit" id="limit" class="browser-default custom-select">
+                        <div class="col-sm-3 text-center">
+                            <select name="limit" id="limit" class="mdb-select md-form">
                                 <option value="" id="allUsers" selected></option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -30,7 +30,6 @@ include_once '../../../core/admin.php';
                 </div>
                 <div class="card-body" style="height:420px;">
                 <div class="table-wrapper-scroll-y my-custom-scrollbar mb-1" >
-
                 <table class="table table-bordered table-striped mb-0">
                 <thead>
                     <tr>
@@ -64,17 +63,17 @@ include_once '../../../core/admin.php';
       <div class="modal-body">
         <form id="editUserForm">
           <div class="row">
-            <div class="col-md-6 md-form">
+            <div class="col-sm-6 md-form">
               <input type="text" class="editUser form-control" name="firstname">
             </div>
-            <div class="col-md-6 md-form">
+            <div class="col-sm-6 md-form">
               <input type="text" class="editUser form-control" name="lastname">
             </div>
-            <div class="col-md-12 md-form">
+            <div class="col-sm-12 md-form">
               <input type="email" name="email" id="editUserEmail" class="form-control editUser">
             </div>
           </div>
-            <div class="col-md-12 text-center">
+            <div class="col-sm-12 text-center">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeUserEditModal">Close</button>
               <button type="submit" class="btn btn-success">Save changes</button>
             </div>

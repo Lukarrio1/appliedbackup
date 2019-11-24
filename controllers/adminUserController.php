@@ -13,7 +13,7 @@ class Admin_user extends Base
     {
         $search = trim($this->clean($s, $this->conn));
         $sql = $search == "all" ? "SELECT * FROM users" : $sql = "SELECT * FROM users
-        WHERE email LIKE '%$search%' or firstname LIKE '%$search%'";
+        WHERE email LIKE '%$search%' or firstname LIKE '%$search%' or id LIKE '%$search%'";
         $qry = mysqli_query($this->conn, $sql);
         $users = mysqli_fetch_all($qry, MYSQLI_ASSOC);
         $res = array();

@@ -137,6 +137,6 @@ switch ($function) {
         $user->UploadProImg();
         break;
     default:
-
+        header('Location:../resources/view/404.php');
         break;
 }

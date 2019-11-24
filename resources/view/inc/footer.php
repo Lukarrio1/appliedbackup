@@ -44,6 +44,7 @@
             state.img = null
         }
     };
+
 </script>
 <script src="../../../resources/js/client/user.js"></script>
 <script src="../../../resources/js/client/add_friend.js"></script>
